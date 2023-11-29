@@ -67,7 +67,10 @@ export class TokenHandler {
         try {
             const requestOptions = {
                 method: "POST",
-                body: JSON.stringify({refreshToken: this.refreshToken})
+                body: JSON.stringify({refreshToken: this.refreshToken}),
+                headers: {
+                    "Content-type": "application/json"
+                }
             };
             const res = await fetch(`${this.url}/iam/token?scope=offline&grant_type=refresh_token`, requestOptions);
             if (res.status === HTTP_STATUS_UNAUTHORIZED) {
@@ -97,8 +100,8 @@ export class TokenHandler {
         }
     }
 
-    private log(json: TokenResponse){
-        if(LOG_API_RESPONSES){
+    private log(json: TokenResponse) {
+        if (LOG_API_RESPONSES) {
             if (LOG_API_RESPONSES) {
                 console.log("Token Response", JSON.stringify(json), this.refreshToken);
                 console.log("Token Info", parseJwt(this.token || ""))
